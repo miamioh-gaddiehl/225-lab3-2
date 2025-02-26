@@ -54,17 +54,29 @@ pipeline {
                 }
             }
         }
-    }
-
-        post {
-            success {
-                slackSend(color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps", channel: "#build-status")
-            }
-            unstable {
-                slackSend(color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps", channel: "#build-status")
-            }
-            failure {
-                slackSend(color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps", channel: "#build-status")
+        stage('Test Slack') {
+            steps {
+                script {
+                    slackSend(
+                        channel: "#build-status",
+                        message: "Test Message from Jenkins: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                        color: "good",
+                        // tokenCredentialId: "Slack-Token-DevOps"
+                    )
+                }
             }
         }
+    }
+
+        // post {
+        //     success {
+        //         slackSend color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        //     }
+        //     unstable {
+        //         slackSend color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        //     }
+        //     failure {
+        //         slackSend color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        //     }
+        // }
 }
