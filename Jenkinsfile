@@ -58,13 +58,13 @@ pipeline {
 
         post {
             success {
-                slackSend(color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps")
+                slackSend(color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps", channel: "#build-status")
             }
             unstable {
-                slackSend(color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps")
+                slackSend(color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps", channel: "#build-status")
             }
             failure {
-                slackSend(color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps")
+                slackSend(color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}", tokenCredentialId: "Slack-Token-DevOps", channel: "#build-status")
             }
         }
 }
