@@ -54,30 +54,17 @@ pipeline {
                 }
             }
         }
-        stage('Test Slack') {
-            steps {
-                script {
-                    slackSend(
-                        channel: "#build-status",
-                        message: "Test Message from Jenkins: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                        color: "good",
-                        teamDomain: "cit225-hahb-spring25",
-                        // tokenCredentialId: "Slack-Token-DevOps"
-                    )
-                }
-            }
-        }
     }
 
-        // post {
-        //     success {
-        //         slackSend color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-        //     }
-        //     unstable {
-        //         slackSend color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-        //     }
-        //     failure {
-        //         slackSend color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-        //     }
-        // }
+        post {
+            success {
+                slackSend color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            }
+            unstable {
+                slackSend color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            }
+            failure {
+                slackSend color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            }
+        }
 }
