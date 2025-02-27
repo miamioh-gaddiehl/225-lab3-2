@@ -56,15 +56,55 @@ pipeline {
         }
     }
 
-        post {
-            success {
-                slackSend color: "good", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-            }
-            unstable {
-                slackSend color: "warning", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-            }
-            failure {
-                slackSend color: "danger", message: "Build Completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+    post {
+        success {
+            script {
+                withCredentials([string(credentialsId: 'gaddiehl-slack-webhook-url', variable: 'SLACK_WEBHOOK')]) {
+                    sh '''
+                    curl -X POST -H "Content-type: application/json" --data '{
+                        "attachments": [
+                            {
+                                "color": "good",
+                                "text": "✅ Build Succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                            }
+                        ]
+                    }' "$SLACK_WEBHOOK"
+                    '''
+                }
             }
         }
+        failure {
+            script {
+                withCredentials([string(credentialsId: 'gaddiehl-slack-webhook-url', variable: 'SLACK_WEBHOOK')]) {
+                    sh '''
+                    curl -X POST -H "Content-type: application/json" --data '{
+                        "attachments": [
+                            {
+                                "color": "danger",
+                                "text": "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                            }
+                        ]
+                    }' "$SLACK_WEBHOOK"
+                    '''
+                }
+            }
+        }
+        unstable {
+            script {
+                withCredentials([string(credentialsId: 'gaddiehl-slack-webhook-url', variable: 'SLACK_WEBHOOK')]) {
+                    sh '''
+                    curl -X POST -H "Content-type: application/json" --data '{
+                        "attachments": [
+                            {
+                                "color": "warning",
+                                "text": "⚠️ Build Unstable: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                            }
+                        ]
+                    }' "$SLACK_WEBHOOK"
+                    '''
+                }
+            }
+        }
+    }
 }
+
