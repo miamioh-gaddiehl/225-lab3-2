@@ -61,6 +61,7 @@ pipeline {
                         channel: "#build-status",
                         message: "Test Message from Jenkins: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
                         color: "good",
+                        teamDomain: "cit225-hahb-spring25",
                         // tokenCredentialId: "Slack-Token-DevOps"
                     )
                 }
