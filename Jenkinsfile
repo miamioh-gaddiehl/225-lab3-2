@@ -60,7 +60,7 @@ pipeline {
         success {
             script {
                 withCredentials([string(credentialsId: 'gaddiehl-slack-webhook-url', variable: 'SLACK_WEBHOOK')]) {
-                    sh '''
+                    sh """
                     curl -X POST -H "Content-type: application/json" --data '{
                         "attachments": [
                             {
@@ -69,15 +69,15 @@ pipeline {
                             }
                         ]
                     }' "$SLACK_WEBHOOK"
-                    '''
+                    """
                 }
             }
         }
         failure {
             script {
                 withCredentials([string(credentialsId: 'gaddiehl-slack-webhook-url', variable: 'SLACK_WEBHOOK')]) {
-                    sh '''
-                    curl -X POST -H "Content-type: application/json" --data '{
+                    sh """
+                                        curl -X POST -H "Content-type: application/json" --data '{
                         "attachments": [
                             {
                                 "color": "danger",
@@ -85,15 +85,15 @@ pipeline {
                             }
                         ]
                     }' "$SLACK_WEBHOOK"
-                    '''
-                }
+                    """
+                                    }
             }
         }
         unstable {
             script {
                 withCredentials([string(credentialsId: 'gaddiehl-slack-webhook-url', variable: 'SLACK_WEBHOOK')]) {
-                    sh '''
-                    curl -X POST -H "Content-type: application/json" --data '{
+                    sh """
+                                        curl -X POST -H "Content-type: application/json" --data '{
                         "attachments": [
                             {
                                 "color": "warning",
@@ -101,8 +101,8 @@ pipeline {
                             }
                         ]
                     }' "$SLACK_WEBHOOK"
-                    '''
-                }
+                    """
+                                    }
             }
         }
     }
